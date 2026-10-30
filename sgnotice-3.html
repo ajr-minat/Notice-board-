@@ -1,0 +1,291 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="theme-color" content="#123b2a">
+  <meta name="description" content="Senior High School notice board for academic information, examinations, clubs, sports and school announcements.">
+  <title>SHS Notice Board | 2026–2027</title>
+  <style>
+    :root {
+      --green: #123b2a;
+      --green-2: #1d6546;
+      --gold: #f4c95d;
+      --paper: #f5f7f4;
+      --ink: #1d2b24;
+      --muted: #5c6b62;
+      --line: #dce5de;
+      --white: #fff;
+      --urgent: #a82d2d;
+      --shadow: 0 8px 24px rgba(18, 59, 42, .08);
+    }
+    * { box-sizing: border-box; }
+    html { scroll-behavior: smooth; }
+    body {
+      margin: 0;
+      background: var(--paper);
+      color: var(--ink);
+      font-family: system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+      line-height: 1.65;
+    }
+    a { color: var(--green-2); }
+    .hero {
+      color: var(--white);
+      background: linear-gradient(135deg, #0d3022, #1d6546);
+      padding: 34px 18px 28px;
+      border-bottom: 5px solid var(--gold);
+    }
+    .hero-inner, main, footer { width: min(1100px, 100% - 32px); margin-inline: auto; }
+    .school-label {
+      display: inline-block; margin: 0 0 10px; padding: 5px 11px;
+      border: 1px solid rgba(255,255,255,.35); border-radius: 999px;
+      font-size: .82rem; letter-spacing: .04em;
+    }
+    h1 { margin: 0; font-size: clamp(1.9rem, 5vw, 3.25rem); line-height: 1.12; }
+    .hero p { max-width: 720px; margin: 12px 0 0; color: #e7f2eb; }
+    .year { color: var(--gold); font-weight: 800; }
+    .toolbar {
+      display: flex; gap: 12px; flex-wrap: wrap; align-items: center;
+      margin: 22px 0 18px;
+    }
+    .search {
+      flex: 1 1 230px; min-width: 0; padding: 12px 14px;
+      border: 1px solid #cbd8ce; border-radius: 12px; font: inherit;
+      background: white; color: var(--ink);
+    }
+    .search:focus { outline: 3px solid #f4c95d88; border-color: var(--green-2); }
+    .filters { display: flex; flex-wrap: wrap; gap: 8px; }
+    .filter {
+      cursor: pointer; border: 1px solid #cbd8ce; border-radius: 999px;
+      padding: 8px 12px; background: white; color: var(--green);
+      font: inherit; font-size: .9rem;
+    }
+    .filter[aria-pressed="true"] { background: var(--green); color: white; border-color: var(--green); }
+    .notice-grid { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 16px; padding-bottom: 28px; }
+    .notice {
+      background: var(--white); border: 1px solid var(--line); border-radius: 16px;
+      padding: 20px; box-shadow: var(--shadow); min-width: 0;
+    }
+    .notice[hidden] { display: none; }
+    .notice h2 { margin: 0 0 8px; font-size: 1.16rem; line-height: 1.35; color: var(--green); }
+    .notice p { margin: 8px 0; }
+    .notice ul { margin: 8px 0 0; padding-left: 22px; }
+    .tag {
+      display: inline-block; margin-bottom: 10px; padding: 3px 9px;
+      border-radius: 999px; background: #eaf3ec; color: #21563b;
+      font-size: .78rem; font-weight: 750;
+    }
+    .urgent { border-top: 4px solid var(--urgent); }
+    .urgent .tag { background: #fff0f0; color: var(--urgent); }
+    .important { border-top: 4px solid var(--gold); }
+    .meta { color: var(--muted); font-size: .88rem; }
+    .pin-list { display: grid; gap: 8px; margin-top: 10px; }
+    .pin { padding: 9px 11px; background: #f6f8f6; border-radius: 10px; }
+    .empty {
+      grid-column: 1 / -1; text-align: center; padding: 28px;
+      color: var(--muted); background: white; border-radius: 14px;
+    }
+    footer { border-top: 1px solid var(--line); padding: 18px 0 30px; color: var(--muted); font-size: .9rem; }
+    .footer-title { color: var(--green); font-weight: 800; }
+    @media (max-width: 680px) {
+      .notice-grid { grid-template-columns: 1fr; }
+      .hero { padding-top: 27px; }
+      .notice { padding: 17px; }
+    }
+    @media print {
+      body { background: white; }
+      .toolbar { display: none; }
+      .hero { background: white; color: black; border-bottom: 2px solid black; padding-inline: 0; }
+      .hero p { color: black; }
+      .notice-grid { grid-template-columns: 1fr 1fr; }
+      .notice { box-shadow: none; break-inside: avoid; }
+    }
+  </style>
+</head>
+<body>
+  <header class="hero">
+    <div class="hero-inner">
+      <p class="school-label">STUDENT INFORMATION CENTRE</p>
+      <h1>🏫 Senior High School<br>Notice Board</h1>
+      <p class="year">Academic Year 2026/2027</p>
+      <p>School announcements, academic reminders, examination information, clubs, sports and student activities in one place.</p>
+    </div>
+  </header>
+
+  <main>
+    <section class="toolbar" aria-label="Search and filter notices">
+      <label for="notice-search" class="sr-only" style="position:absolute;left:-9999px">Search notices</label>
+      <input id="notice-search" class="search" type="search" placeholder="Search notices…" autocomplete="off">
+      <div class="filters" aria-label="Filter by category">
+        <button class="filter" type="button" data-filter="All" aria-pressed="true">All</button>
+        <button class="filter" type="button" data-filter="Urgent" aria-pressed="false">Urgent</button>
+        <button class="filter" type="button" data-filter="Academics" aria-pressed="false">Academics</button>
+        <button class="filter" type="button" data-filter="Examinations" aria-pressed="false">Exams</button>
+        <button class="filter" type="button" data-filter="Form 1" aria-pressed="false">Form 1</button>
+        <button class="filter" type="button" data-filter="Form 2" aria-pressed="false">Form 2</button>
+        <button class="filter" type="button" data-filter="Form 3" aria-pressed="false">Form 3</button>
+        <button class="filter" type="button" data-filter="Sports" aria-pressed="false">Sports</button>
+        <button class="filter" type="button" data-filter="Clubs" aria-pressed="false">Clubs</button>
+        <button class="filter" type="button" data-filter="Boarding" aria-pressed="false">Boarding</button>
+        <button class="filter" type="button" data-filter="General" aria-pressed="false">General</button>
+      </div>
+    </section>
+
+    <section class="notice-grid" id="notice-grid" aria-live="polite">
+      <article class="notice important" data-category="General">
+        <span class="tag">📌 GENERAL</span>
+        <h2>Welcome to the 2026/2027 Academic Year</h2>
+        <p>All students are reminded to observe school rules and regulations, attend classes regularly, keep classrooms and dormitories clean, and maintain good academic and personal discipline.</p>
+        <p>Check this board regularly for announcements, academic information, examination schedules, club activities and school events.</p>
+        <p class="meta">Posted: 30 September 2026</p>
+      </article>
+
+      <article class="notice urgent" data-category="Urgent">
+        <span class="tag">🚨 URGENT UPDATE</span>
+        <h2>Pre-Tertiary Teachers’ Strike</h2>
+        <p>Students and parents should follow verified updates about any nationwide teacher-union strike. Follow school-specific instructions when they are issued by the administration.</p>
+        <p>Please do not rely on rumours or unverified social-media posts. Confirm updates with official school or Ghana Education Service communication.</p>
+        <p class="meta">Status: Check the latest official announcement before acting.</p>
+      </article>
+
+      <article class="notice" data-category="Academics">
+        <span class="tag">📚 ACADEMICS</span>
+        <h2>Preparation for End-of-Term Assessments</h2>
+        <p>Begin preparing early for class tests, assignments and examinations.</p>
+        <ul>
+          <li>Attend lessons regularly.</li><li>Complete assignments on time.</li>
+          <li>Revise class notes.</li><li>Ask teachers for help when needed.</li>
+          <li>Avoid examination malpractice.</li>
+        </ul>
+      </article>
+
+      <article class="notice" data-category="Examinations">
+        <span class="tag">📝 EXAMINATIONS</span>
+        <h2>Students’ Examination Conduct</h2>
+        <p>Arrive at examination venues early and bring only materials permitted by the examination authorities. Cheating and other examination malpractice may be dealt with under school and examination regulations.</p>
+      </article>
+
+      <article class="notice" data-category="Form 3">
+        <span class="tag">🎓 FORM 3</span>
+        <h2>WASSCE Preparation</h2>
+        <p>Form 3 students are encouraged to follow a regular revision timetable and make effective use of past questions and teacher consultations.</p>
+      </article>
+
+      <article class="notice" data-category="Form 2">
+        <span class="tag">📖 FORM 2</span>
+        <h2>Academic Progress</h2>
+        <p>Form 2 students should identify difficult subjects early and seek assistance from their teachers. This year is an important part of preparation for the final year.</p>
+      </article>
+
+      <article class="notice" data-category="Form 1">
+        <span class="tag">🆕 FORM 1</span>
+        <h2>Welcome to SHS</h2>
+        <p>New students should become familiar with the school’s rules, timetable, houses, departments, library, laboratories and other facilities. Make sure you know your class teacher and housemaster or housemistress.</p>
+      </article>
+
+      <article class="notice" data-category="Boarding">
+        <span class="tag">🏠 BOARDING</span>
+        <h2>Cleanliness and Sanitation</h2>
+        <p>Keep dormitories, washrooms and surrounding areas clean. Dispose of rubbish appropriately and help maintain a healthy living environment.</p>
+      </article>
+
+      <article class="notice" data-category="Sports">
+        <span class="tag">⚽ SPORTS</span>
+        <h2>House Sports Registration</h2>
+        <p>Students interested in representing their houses should register with their house sports representatives.</p>
+        <ul><li>Football</li><li>Athletics</li><li>Volleyball</li><li>Basketball</li><li>Handball</li><li>Table tennis</li></ul>
+      </article>
+
+      <article class="notice" data-category="Clubs">
+        <span class="tag">🧪 CLUBS & SOCIETIES</span>
+        <h2>Science Club Meeting</h2>
+        <p>Science Club members should attend the next club meeting. Students interested in joining are welcome to ask the club coordinator for details.</p>
+      </article>
+
+      <article class="notice" data-category="Clubs">
+        <span class="tag">💻 CLUBS & SOCIETIES</span>
+        <h2>ICT Club Skills Programme</h2>
+        <p>The ICT Club will organise activities to develop practical digital skills, including basic programming, web development and responsible use of technology.</p>
+      </article>
+
+      <article class="notice" data-category="General">
+        <span class="tag">📚 LIBRARY</span>
+        <h2>Library Rules</h2>
+        <ul><li>Maintain silence.</li><li>Return borrowed books on time.</li><li>Handle books carefully.</li><li>Keep the library clean.</li><li>Respect other students.</li></ul>
+      </article>
+
+      <article class="notice" data-category="General">
+        <span class="tag">💰 ADMINISTRATION</span>
+        <h2>School Payments</h2>
+        <p>Make only officially approved school payments through designated channels. Verify any payment request with the school before paying an individual claiming to represent the school.</p>
+      </article>
+
+      <article class="notice" data-category="General">
+        <span class="tag">📢 GENERAL</span>
+        <h2>Lost and Found</h2>
+        <p>Report lost belongings to the appropriate school authority or Lost and Found office. Hand in property you find rather than keeping it.</p>
+      </article>
+
+      <article class="notice" data-category="General">
+        <span class="tag">🗓️ SCHOOL EVENTS</span>
+        <h2>Weekly Activities Guide</h2>
+        <ul><li><strong>Monday:</strong> Academic activities</li><li><strong>Tuesday:</strong> Clubs and societies</li><li><strong>Wednesday:</strong> Sports and house activities</li><li><strong>Thursday:</strong> Academic support activities</li><li><strong>Friday:</strong> General school activities and announcements</li></ul>
+        <p class="meta">Use the official school timetable for confirmed dates and times.</p>
+      </article>
+
+      <article class="notice important" data-category="General">
+        <span class="tag">📌 PINNED NOTICES</span>
+        <h2>Notice Priority Guide</h2>
+        <div class="pin-list">
+          <div class="pin">🔴 <strong>Urgent:</strong> Official strike or emergency updates</div>
+          <div class="pin">🟠 <strong>Important:</strong> Examination information</div>
+          <div class="pin">🔵 <strong>Academic:</strong> Revision and assignments</div>
+          <div class="pin">🟢 <strong>Activities:</strong> Clubs and sports</div>
+          <div class="pin">⚪ <strong>General:</strong> School-wide information</div>
+        </div>
+      </article>
+
+      <p class="empty" id="empty-message" hidden>No notices match your search. Try another word or choose “All”.</p>
+    </section>
+  </main>
+
+  <footer>
+    <p class="footer-title">School Notice Board • 2026/2027</p>
+    <p>Information on this board should be checked against official school communication where necessary. Replace sample announcements with confirmed school notices before publishing.</p>
+  </footer>
+
+  <script>
+    (() => {
+      const search = document.getElementById('notice-search');
+      const cards = [...document.querySelectorAll('.notice')];
+      const buttons = [...document.querySelectorAll('.filter')];
+      const empty = document.getElementById('empty-message');
+      let activeCategory = 'All';
+
+      function updateNotices() {
+        const term = search.value.trim().toLowerCase();
+        let visible = 0;
+        cards.forEach(card => {
+          const category = card.dataset.category || '';
+          const matchesCategory = activeCategory === 'All' || category === activeCategory;
+          const matchesText = card.textContent.toLowerCase().includes(term);
+          const show = matchesCategory && matchesText;
+          card.hidden = !show;
+          if (show) visible++;
+        });
+        empty.hidden = visible !== 0;
+      }
+
+      buttons.forEach(button => {
+        button.addEventListener('click', () => {
+          activeCategory = button.dataset.filter;
+          buttons.forEach(item => item.setAttribute('aria-pressed', String(item === button)));
+          updateNotices();
+        });
+      });
+      search.addEventListener('input', updateNotices);
+      updateNotices();
+    })();
+  </script>
+</body>
+</html>
